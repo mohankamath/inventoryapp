@@ -51,7 +51,11 @@ export default function App() {
     if (cameraRef.current) {
       try {
         // Snap a photo of the item
-        const photo = await cameraRef.current.takePictureAsync({ quality: 0.5 });
+        // Inside handleBarcodeScanned...
+        const photo = await cameraRef.current.takePictureAsync({
+          quality: 0.5,
+          shutterSound: false  // <--- ADD THIS LINE
+        });
         addItem(photo.uri, data); // Use QR data as the name
         Alert.alert("QR Scanned!", `Added: ${data}`);
       } catch (error) {
@@ -67,7 +71,10 @@ export default function App() {
   const takeManualPhoto = async () => {
     if (cameraRef.current) {
       try {
-        const photo = await cameraRef.current.takePictureAsync({ quality: 0.5 });
+        const photo = await cameraRef.current.takePictureAsync({
+          quality: 0.5,
+          shutterSound: false  // <--- ADD THIS LINE
+        });
         addItem(photo.uri, "Manual Item");
       } catch (error) {
         console.log("Error:", error);
@@ -77,7 +84,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      
+
       {/* Camera Section */}
       <View style={styles.cameraContainer}>
         <CameraView
@@ -93,7 +100,7 @@ export default function App() {
             <Text style={styles.overlayText}>
               {scanned ? "Processing..." : "Scan QR Code"}
             </Text>
-            
+
             {/* Manual Shutter Button */}
             <TouchableOpacity style={styles.captureBtn} onPress={takeManualPhoto}>
               <View style={styles.captureBtnInner} />
